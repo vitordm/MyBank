@@ -1,7 +1,5 @@
 ﻿using MyBank.Domain.Contracts;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MyBank.Domain.Entities.Bank
 {
@@ -14,5 +12,18 @@ namespace MyBank.Domain.Entities.Bank
         public long BankAccountId { get; private set; }
         public BankAccount Account { get; private set; }
 
+        protected BankTransaction()
+        {
+
+        }
+
+        public BankTransaction(string description, decimal amount, BankAccount account)
+        {
+            CreateDate = DateTime.Now;
+            Description = description;
+            Amount = amount;
+            Account = account;
+            BankAccountId = account.Id;
+        }
     }
 }

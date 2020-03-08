@@ -1,9 +1,9 @@
-﻿using MyBank.Domain.Entities.Bank;
+﻿using Microsoft.EntityFrameworkCore;
+using MyBank.Domain.Entities.Bank;
 using MyBank.Infra.Data.Contracts;
 using MyBank.Infra.Data.Contracts.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MyBank.Infra.Data.Repositories.Bank
 {
@@ -11,6 +11,15 @@ namespace MyBank.Infra.Data.Repositories.Bank
     {
         public BankAccountRepository(IEFUnitOfWork unitOfWork) : base(unitOfWork)
         {
+        }
+
+        public async Task<BankAccount> FindAccountAsync(string branch, string account, string digit)
+        {
+            return await UnitOfWork.Set<BankAccount>()
+                .Include(b => b.Customer)
+                .Include(b => b.Transactions)
+                .Where(b => b.Branch == branch && b.Account == account && b.Digit == digit)
+                .FirstOrDefaultAsync();
         }
     }
 }

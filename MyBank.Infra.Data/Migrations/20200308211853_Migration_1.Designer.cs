@@ -9,7 +9,7 @@ using MyBank.Infra.Data;
 namespace MyBank.Infra.Data.Migrations
 {
     [DbContext(typeof(MyBankDbContext))]
-    [Migration("20200308015632_Migration_1")]
+    [Migration("20200308211853_Migration_1")]
     partial class Migration_1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,10 @@ namespace MyBank.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
+                    b.Property<string>("Account")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("AuthorizationPass")
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -36,9 +40,15 @@ namespace MyBank.Infra.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Digit")
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("IsMainAccount")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<decimal>("TotalBalance")
                         .HasColumnType("decimal(65,30)");
@@ -64,6 +74,10 @@ namespace MyBank.Infra.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Document")
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 

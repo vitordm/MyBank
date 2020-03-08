@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MyBank.Infra.IoC;
+using MyBank.Web.Helpers.Mvc;
 
 namespace MyBank.Web
 {
@@ -30,7 +31,11 @@ namespace MyBank.Web
         {
             services.AddDependencies(Configuration);
 #if DEBUG
-            services.AddControllersWithViews()
+            services.AddControllersWithViews(options =>
+                        options.Filters.Add(new HttpResponseExceptionFilter()))
+                .AddNewtonsoftJson(options =>
+                        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                )
                 .AddRazorRuntimeCompilation()
                 .ConfigureApiBehaviorOptions(options =>
                 {

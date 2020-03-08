@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200308015632_Migration_1.cs" />
+    <Compile Remove="Migrations\20200308015632_Migration_1.Designer.cs" />
+    <Compile Remove="Migrations\20200308210310_Migration_1.cs" />
+    <Compile Remove="Migrations\20200308210310_Migration_1.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MyBank.Domain\MyBank.Domain.csproj" />
   </ItemGroup>
 

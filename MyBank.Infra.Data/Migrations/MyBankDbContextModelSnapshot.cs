@@ -23,6 +23,10 @@ namespace MyBank.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
+                    b.Property<string>("Account")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("AuthorizationPass")
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -34,9 +38,15 @@ namespace MyBank.Infra.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Digit")
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("IsMainAccount")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<decimal>("TotalBalance")
                         .HasColumnType("decimal(65,30)");
@@ -62,6 +72,10 @@ namespace MyBank.Infra.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Document")
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 

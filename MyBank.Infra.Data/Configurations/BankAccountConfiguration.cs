@@ -14,6 +14,7 @@ namespace MyBank.Infra.Data.Configurations
         {
             builder.HasKey(b => b.Id);
             builder.Property(b => b.Branch).IsRequired();
+            builder.Property(b => b.Account).IsRequired();
             builder.Property(b => b.Digit).IsRequired();
             builder.Property(b => b.AuthorizationPass).IsRequired();
             builder.HasOne(b => b.Customer).WithMany(c => c.Accounts);

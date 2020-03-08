@@ -14,6 +14,7 @@ namespace MyBank.Infra.Data.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Document = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     FullName = table.Column<string>(nullable: false),
                     Address = table.Column<string>(nullable: false)
@@ -30,12 +31,15 @@ namespace MyBank.Infra.Data.Migrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Uid = table.Column<Guid>(nullable: false),
+                    CreateDate = table.Column<DateTime>(nullable: false),
                     Type = table.Column<string>(nullable: false),
                     Branch = table.Column<string>(nullable: false),
+                    Account = table.Column<string>(nullable: false),
                     Digit = table.Column<string>(nullable: false),
                     TotalBalance = table.Column<decimal>(nullable: false),
                     BankCustomerId = table.Column<long>(nullable: false),
-                    AuthorizationPass = table.Column<string>(nullable: false)
+                    AuthorizationPass = table.Column<string>(nullable: false),
+                    IsMainAccount = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

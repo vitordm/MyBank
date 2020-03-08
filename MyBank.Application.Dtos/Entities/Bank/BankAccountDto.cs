@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,8 +14,10 @@ namespace MyBank.Application.Dtos.Entities.Bank
         public string Digit { get; set; }
         public decimal TotalBalance { get; set; }
         public long BankCustomerId { get; set; }
-        public string AuthorizationPass { get; set; }
 
+        [JsonIgnore]
+        public string AuthorizationPass { get; set; }
+        
         public BankCustomerDto Customer { get; set; }
         public IList<BankTransactionDto> Transactions { get; set; }
     }

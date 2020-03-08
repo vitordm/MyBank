@@ -10,6 +10,7 @@ using MyBank.Infra.Data.Contracts;
 using MyBank.Infra.Data.Contracts.Repositories;
 using MyBank.Application.Services.Contracts;
 using System;
+using MyBank.Infra.Data.Repositories.Bank;
 
 namespace MyBank.Infra.IoC
 {
@@ -18,8 +19,8 @@ namespace MyBank.Infra.IoC
         const string ConnectionStringName = "DefaultConnection";
         public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            //services.AddTransient(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
             services
                 //.AddEntityFrameworkSqlServer()
                 .AddEntityFrameworkMySql()
@@ -32,7 +33,17 @@ namespace MyBank.Infra.IoC
                     );
                 }, ServiceLifetime.Transient);
 
-            //services.AddTransient<IEFUnitOfWork>(provider => provider.GetService<MinhasNFcDbContext>());
+            services.AddTransient<IEFUnitOfWork>(provider => provider.GetService<MyBankDbContext>());
+
+
+            services.Scan(scan =>
+            {
+                scan.FromAssemblies(typeof(IRepository).Assembly)
+                .AddClasses()
+                .AsImplementedInterfaces()
+                .WithScopedLifetime();
+            });
+
 
             services.Scan(scan =>
             {
@@ -42,13 +53,10 @@ namespace MyBank.Infra.IoC
                 .WithScopedLifetime();
             });
 
-            services.Scan(scan =>
-            {
-                scan.FromAssemblies(typeof(IRepository).Assembly)
-                .AddClasses()
-                .AsImplementedInterfaces()
-                .WithScopedLifetime();
-            });
+            //services.AddTransient<IBankAccountRepository, BankAccountRepository>();
+            //services.AddTransient<IBankCustomerRepository, BankCustomerRepository>();
+            //services.AddTransient<IBankTransactionRepository, BankTransactionRepository>();
+
 
 
             services.AddAutoMapper(typeof(MyBankMapperProfile));

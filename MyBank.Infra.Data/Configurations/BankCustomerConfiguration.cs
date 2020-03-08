@@ -15,6 +15,7 @@ namespace MyBank.Infra.Data.Configurations
             builder.Property(b => b.Name).IsRequired();
             builder.Property(b => b.FullName).IsRequired();
             builder.Property(b => b.Address).IsRequired();
+            builder.Property(b => b.Document).IsRequired();
             builder.HasMany(c => c.Accounts).WithOne(b => b.Customer);
         }
     }

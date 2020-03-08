@@ -13,6 +13,7 @@
     <ProjectReference Include="..\MyBank.Application.Dtos\MyBank.Application.Dtos.csproj" />
     <ProjectReference Include="..\MyBank.Domain\MyBank.Domain.csproj" />
     <ProjectReference Include="..\MyBank.Infra.Data\MyBank.Infra.Data.csproj" />
+    <ProjectReference Include="..\MyBank.Infra.Helpers\MyBank.Infra.Helpers.csproj" />
   </ItemGroup>
 
 </Project>
