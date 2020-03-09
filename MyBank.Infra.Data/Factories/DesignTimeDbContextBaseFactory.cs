@@ -20,7 +20,6 @@ namespace MyBank.Infra.Data.Factories
                 Environment.SetEnvironmentVariable(AspNetCoreEnvironment, "Development");
             }
 
-            //return Create(Directory.GetCurrentDirectory(), Environment.GetEnvironmentVariable(AspNetCoreEnvironment));
             return Create(AppContext.BaseDirectory, Environment.GetEnvironmentVariable(AspNetCoreEnvironment));
         }
 
@@ -68,7 +67,6 @@ namespace MyBank.Infra.Data.Factories
             }
 
             var optionsBuilder = new DbContextOptionsBuilder<TContext>();
-            //optionsBuilder.UseSqlServer(connectionString);
             optionsBuilder.UseMySql(connectionString);
 
             Console.WriteLine("DbContextFactoryBase.Create(string): Connection string: {0}", connectionString);

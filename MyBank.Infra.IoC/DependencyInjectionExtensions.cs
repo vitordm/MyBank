@@ -8,9 +8,7 @@ using MyBank.Application.Services.Contracts;
 using MyBank.Infra.Data;
 using MyBank.Infra.Data.Contracts;
 using MyBank.Infra.Data.Contracts.Repositories;
-using MyBank.Application.Services.Contracts;
 using System;
-using MyBank.Infra.Data.Repositories.Bank;
 
 namespace MyBank.Infra.IoC
 {
@@ -22,11 +20,9 @@ namespace MyBank.Infra.IoC
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
             services
-                //.AddEntityFrameworkSqlServer()
                 .AddEntityFrameworkMySql()
                 .AddDbContext<MyBankDbContext>(options =>
                 {
-                    //options.UseSqlServer(
                     options.UseMySql(
                         configuration.GetConnectionString(ConnectionStringName),
                         opts => opts.MigrationsAssembly(typeof(MyBankDbContext).Assembly.GetName().Name)
@@ -52,12 +48,6 @@ namespace MyBank.Infra.IoC
                 .AsImplementedInterfaces()
                 .WithScopedLifetime();
             });
-
-            //services.AddTransient<IBankAccountRepository, BankAccountRepository>();
-            //services.AddTransient<IBankCustomerRepository, BankCustomerRepository>();
-            //services.AddTransient<IBankTransactionRepository, BankTransactionRepository>();
-
-
 
             services.AddAutoMapper(typeof(MyBankMapperProfile));
 

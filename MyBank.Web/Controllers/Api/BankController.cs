@@ -38,5 +38,27 @@ namespace MyBank.Web.Controllers.Api
         [HttpPost("Withdraw")]
         public async Task<IActionResult> Withdraw([FromBody] WithdrawRequest request)
             => Ok(await bankService.Withdraw(request));
+
+        [HttpPost("Account")]
+        public async Task<IActionResult> Account([FromBody] GetAccountRequest request)
+        {
+            var conta = await bankService.GetAccount(request);
+            if (conta is null)
+                return NotFound();
+            return Ok(conta);
+        }
+
+        [HttpGet("Account")]
+        public async Task<IActionResult> Account([FromQuery] Guid accountUid)
+        {
+            var conta = await bankService.GetAccountByUid(accountUid);
+            if (conta is null)
+                return NotFound();
+            return Ok(conta);
+        }
+
+        [HttpGet("AccountTransactions")]
+        public async Task<IActionResult> AccountTransactions([FromQuery] Guid accountUid)
+            => Ok(await bankService.GetTransactionsFromAccountUid(accountUid));
     }
 }

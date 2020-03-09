@@ -51,7 +51,24 @@ namespace MyBank.Web
                     };
                 });
 #else
-            services.AddControllersWithViews();
+            .AddControllersWithViews(options =>
+                        options.Filters.Add(new HttpResponseExceptionFilter()))
+                .AddNewtonsoftJson(options =>
+                        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                )
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.InvalidModelStateResponseFactory = context =>
+                    {
+                        var result = new BadRequestObjectResult(context.ModelState);
+
+                        // TODO: add `using using System.Net.Mime;` to resolve MediaTypeNames
+                        result.ContentTypes.Add(MediaTypeNames.Application.Json);
+                        result.ContentTypes.Add(MediaTypeNames.Application.Xml);
+
+                        return result;
+                    };
+                });
 #endif
             services.AddSwaggerGen((c) =>
             {

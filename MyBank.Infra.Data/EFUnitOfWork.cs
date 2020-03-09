@@ -41,7 +41,6 @@ namespace MyBank.Infra.Data
 
         public int ExecuteCommand(string sqlCommand, params object[] parameters)
         {
-            //return Database.ExecuteSqlCommand(sqlCommand, parameters);
             return Database.ExecuteSqlRaw(sqlCommand, parameters);
         }
 

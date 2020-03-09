@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MyBank.Application.Dtos.Entities.Bank;
 using MyBank.Application.Dtos.Requests;
+using MyBank.Application.Dtos.Results;
 using MyBank.Application.Services.Contracts;
 using MyBank.Domain.Entities.Bank;
 using MyBank.Infra.Data.Contracts.Repositories;
@@ -15,14 +16,17 @@ namespace MyBank.Application.Services.Services
     {
         private readonly IBankAccountRepository bankAccountRepository;
         private readonly IBankCustomerRepository bankCustomerRepository;
+        private readonly IBankTransactionRepository bankTransactionRepository;
         private readonly IMapper mapper;
 
         public BankService(IBankAccountRepository bankAccountRepository,
-                           IBankCustomerRepository bankCustomerRepository, 
+                           IBankCustomerRepository bankCustomerRepository,
+                           IBankTransactionRepository bankTransactionRepository,
                            IMapper mapper)
         {
             this.bankAccountRepository = bankAccountRepository;
             this.bankCustomerRepository = bankCustomerRepository;
+            this.bankTransactionRepository = bankTransactionRepository;
             this.mapper = mapper;
         }
 
@@ -62,7 +66,7 @@ namespace MyBank.Application.Services.Services
             var account = await bankAccountRepository.FindAccountAsync(request.Branch, request.Account, request.Digit);
             if (account != null)
                 throw new InvalidOperationException("Account is already registered");
-            
+
             account = new BankAccount(request.Branch, request.Account, request.Digit, request.AuthorizationPass, customer);
 
             await bankAccountRepository.InsertAsync(account);
@@ -105,6 +109,28 @@ namespace MyBank.Application.Services.Services
             await bankAccountRepository.UpdateAsync(account);
 
             return mapper.Map<BankTransactionDto>(transaction);
+        }
+
+        public async Task<BankAccountLiteResult> GetAccount(GetAccountRequest request)
+        {
+            var bankAccount = await bankAccountRepository.FindAccountAsync(
+                request.Branch, request.Account, request.Digit, request.AuthorizationPass);
+            return mapper.Map<BankAccountLiteResult>(bankAccount);
+        }
+
+        public async Task<IList<BankTransactionLiteResult>> GetTransactionsFromAccountUid(Guid accountUid)
+        {
+            var bankAccount = await bankAccountRepository.FindAccountByUidAsync(accountUid);
+            if (bankAccount is null)
+                throw new InvalidOperationException("Account is invalid!");
+
+            return mapper.Map<IList<BankTransactionLiteResult>>(await bankTransactionRepository.GetTransactionsOf(bankAccount));
+        }
+
+        public async Task<BankAccountLiteResult> GetAccountByUid(Guid accountUid)
+        {
+            var account = await bankAccountRepository.FindAccountByUidAsync(accountUid);
+            return mapper.Map<BankAccountLiteResult>(account);
         }
     }
 }

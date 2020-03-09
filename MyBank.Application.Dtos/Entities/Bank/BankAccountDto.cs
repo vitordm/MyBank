@@ -11,6 +11,7 @@ namespace MyBank.Application.Dtos.Entities.Bank
         public Guid Uid { get; set; }
         public string Type { get; set; }
         public string Branch { get; set; }
+        public string Account { get; set; }
         public string Digit { get; set; }
         public decimal TotalBalance { get; set; }
         public long BankCustomerId { get; set; }
