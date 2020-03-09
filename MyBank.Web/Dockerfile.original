@@ -8,12 +8,6 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["MyBank.Web/MyBank.Web.csproj", "MyBank.Web/"]
-COPY ["MyBank.Application.Services/MyBank.Application.Services.csproj", "MyBank.Application.Services/"]
-COPY ["MyBank.Domain/MyBank.Domain.csproj", "MyBank.Domain/"]
-COPY ["MyBank.Infra.Helpers/MyBank.Infra.Helpers.csproj", "MyBank.Infra.Helpers/"]
-COPY ["MyBank.Application.Dtos/MyBank.Application.Dtos.csproj", "MyBank.Application.Dtos/"]
-COPY ["MyBank.Infra.Data/MyBank.Infra.Data.csproj", "MyBank.Infra.Data/"]
-COPY ["MyBank.Infra.IoC/MyBank.Infra.IoC.csproj", "MyBank.Infra.IoC/"]
 RUN dotnet restore "MyBank.Web/MyBank.Web.csproj"
 COPY . .
 WORKDIR "/src/MyBank.Web"

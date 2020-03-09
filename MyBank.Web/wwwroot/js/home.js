@@ -62,8 +62,17 @@ class MyBankViewModel {
             this.linkRetirada();
         });
         $('#link-pagamentos').click((event) => { });
+
         $('#link-acessarconta').click((event) => {
             this.linkAcessarConta();
+        });
+
+        $('#link-novocliente').click((event) => {
+            this.linkNovoCliente();
+        });
+
+        $('#link-novaconta').click((event) => {
+            this.linkNovaConta();
         });
     }
 
@@ -188,6 +197,131 @@ class MyBankViewModel {
         });
     }
 
+    linkNovoCliente() {
+        const html = `
+        <form id="app-form-novocliente">
+            <div class="row">
+                <div class="col-12 form-group">
+                    <input type="text" class="form-control" placeholder="Documento" name="document">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 form-group">
+                    <input type="text" class="form-control" placeholder="Nome" name="name">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 form-group">
+                    <input type="text" class="form-control" placeholder="Sobrenome" name="lastName">
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12 form-group">
+                    <input type="text" class="form-control" placeholder="Endereço" name="address">
+                </div>
+            </div>
+        </form>`;
+
+        bootbox.dialog({
+            title: 'Novo Cliente',
+            message: html,
+            size: 'small',
+            buttons: {
+                cancel: {
+                    label: "Cancelar",
+                    className: 'btn-danger',
+                    callback: function () {
+                        console.log('Custom cancel clicked');
+                    }
+                },
+                ok: {
+                    label: "Prosseguir",
+                    className: 'btn-success',
+                    callback: () => {
+                        //$('#app-form-acessarconta').serializeArray();
+                        const form = utils.serializeFormObject('#app-form-novocliente');
+                        this.realizarNovoCliente(form)
+                    }
+                }
+            }
+        });
+    }
+
+    linkNovaConta() {
+        const html = `
+        <form id="app-form-novaconta">
+            <div class="row">
+                <div class="col-12 form-group">
+                    <input type="text" class="form-control" placeholder="Documento" name="document">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 form-group">
+                    <input type="text" class="form-control" placeholder="Nome" name="cliente">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 form-group">
+                    <select type="text" class="form-control" placeholder="Tipo" name="type">
+                        <option value="CURRENT_ACCOUNT">Conta Corrente</value>
+                        <option value="SAVING_ACCOUNT">Poupança</value>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 form-group">
+                    <input type="text" class="form-control" placeholder="Agência" name="branch">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 form-group">
+                    <input type="text" class="form-control" placeholder="Conta" name="account">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 form-group">
+                    <input type="text" class="form-control" placeholder="Digito" name="digit" maxlength="1">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 form-group">
+                    <input type="password" class="form-control" placeholder="Senha" name="authorizationPass">
+                </div>
+            </div>
+        </form>`;
+
+        bootbox.dialog({
+            title: 'Novo Cliente',
+            message: html,
+            size: 'small',
+            buttons: {
+                cancel: {
+                    label: "Cancelar",
+                    className: 'btn-danger',
+                    callback: function () {
+                        console.log('Custom cancel clicked');
+                    }
+                },
+                ok: {
+                    label: "Prosseguir",
+                    className: 'btn-success',
+                    callback: () => {
+                        //$('#app-form-acessarconta').serializeArray();
+                        const form = utils.serializeFormObject('#app-form-novaconta');
+                        this.realizarNovaConta(form)
+                    }
+                }
+            }
+        });
+    }
+
     realizarDeposito(form) {
         const data = {
             "depositorName": form.depositante,
@@ -224,6 +358,41 @@ class MyBankViewModel {
                 bootbox.alert(`Ocorreu um erro: ${error.response.data}`);
             });
 
+    }
+
+    realizarNovoCliente(form) {
+
+        axios.post('/api/bank/NewCustomer', form)
+            .then((response) => {
+                bootbox.alert("Novo cliente cadastrado!");
+            })
+            .catch((error) => {
+                bootbox.alert(`Ocorreu um erro: ${error.response.data}`);
+            });
+    }
+
+    realizarNovaConta(form) {
+        const data = {
+            type: form.type,
+            branch: form.branch,
+            account: form.account,
+            digit: form.digit,
+            authorizationPass: form.authorizationPass,
+            customer: {
+                document: form.document,
+                name: form.cliente
+            }
+        };
+
+        axios.post('/api/bank/OpenBankAccount', data)
+            .then((response) => {
+                bootbox.alert("Nova Conta cadastrada!");
+            })
+            .catch((error) => {
+                bootbox.alert(`Ocorreu um erro: ${error.response.data}`);
+            });
+
+        
     }
 
     carregarDadosConta(form) {
