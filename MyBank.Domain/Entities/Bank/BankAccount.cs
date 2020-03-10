@@ -22,6 +22,8 @@ namespace MyBank.Domain.Entities.Bank
 
         public bool IsMainAccount { get; private set; }
 
+        public bool Profitable { get; set; } = true;
+
         public BankCustomer Customer { get; private set; }
         public IList<BankTransaction> Transactions { get; private set; } = new List<BankTransaction>();
 

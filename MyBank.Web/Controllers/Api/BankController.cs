@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyBank.Application.Dtos.Entities.Bank;
 using MyBank.Application.Dtos.Requests;
+using MyBank.Application.Dtos.Results;
 using MyBank.Application.Services.Contracts;
 
 namespace MyBank.Web.Controllers.Api
@@ -21,14 +22,17 @@ namespace MyBank.Web.Controllers.Api
         }
 
         [HttpPost("NewCustomer")]
+        [ProducesResponseType(typeof(BankCustomerDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> NewCustomer([FromBody] NewCustomerRequest request) => 
             Ok(await bankService.NewCustomer(request));
 
         [HttpPost("OpenBankAccount")]
+        [ProducesResponseType(typeof(BankAccountDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> OpenBankAccount([FromBody] OpenBankAccountRequest request)
             => Ok(await bankService.OpenBankAccount(request));
 
         [HttpPost("Deposit")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Deposit([FromBody] DepositRequest request)
         {
             await bankService.MakeDeposit(request);
@@ -36,10 +40,13 @@ namespace MyBank.Web.Controllers.Api
         }
 
         [HttpPost("Withdraw")]
+        [ProducesResponseType(typeof(BankTransactionDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> Withdraw([FromBody] WithdrawRequest request)
             => Ok(await bankService.Withdraw(request));
 
         [HttpPost("Account")]
+        [ProducesResponseType(typeof(BankAccountLiteResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Account([FromBody] GetAccountRequest request)
         {
             var conta = await bankService.GetAccount(request);
@@ -49,6 +56,8 @@ namespace MyBank.Web.Controllers.Api
         }
 
         [HttpGet("Account")]
+        [ProducesResponseType(typeof(   BankAccountLiteResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Account([FromQuery] Guid accountUid)
         {
             var conta = await bankService.GetAccountByUid(accountUid);
@@ -58,6 +67,7 @@ namespace MyBank.Web.Controllers.Api
         }
 
         [HttpGet("AccountTransactions")]
+        [ProducesResponseType(typeof(IList<BankTransactionLiteResult>), StatusCodes.Status200OK)]
         public async Task<IActionResult> AccountTransactions([FromQuery] Guid accountUid)
             => Ok(await bankService.GetTransactionsFromAccountUid(accountUid));
     }

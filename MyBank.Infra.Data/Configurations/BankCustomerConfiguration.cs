@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyBank.Domain.Entities.Bank;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MyBank.Infra.Data.Configurations
 {
@@ -17,6 +14,16 @@ namespace MyBank.Infra.Data.Configurations
             builder.Property(b => b.Address).IsRequired();
             builder.Property(b => b.Document).IsRequired();
             builder.HasMany(c => c.Accounts).WithOne(b => b.Customer);
+
+            //builder.HasData(new BankCustomer("000000000000", "John", "Snow", "The North"));
+            builder.HasData(new
+            {
+                Id = 1L,
+                Document = "00000000000",
+                Name = "John",
+                FullName = "Snow",
+                Address = "The North"
+            });
         }
     }
 }

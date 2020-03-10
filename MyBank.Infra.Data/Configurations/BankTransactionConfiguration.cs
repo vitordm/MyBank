@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyBank.Domain.Entities.Bank;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MyBank.Infra.Data.Configurations
 {
@@ -15,6 +13,15 @@ namespace MyBank.Infra.Data.Configurations
             builder.Property(b => b.CreateDate);
             builder.Property(b => b.Description).IsRequired();
             builder.HasOne(b => b.Account).WithMany(a => a.Transactions);
+
+            builder.HasData(new
+            {
+                Id = 1L,
+                CreateDate = DateTime.Now,
+                Description = "Initital Transaction",
+                BankAccountId = 1L,
+                Amount = default(decimal)
+            });
         }
     }
 }

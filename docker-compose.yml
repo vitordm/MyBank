@@ -7,22 +7,29 @@ services:
     build:
       context: .
       dockerfile: MyBank.Web/Dockerfile
-      networks:
-            - mybanknetwork
+    ports:
+      - "8080:80"
+      - "80"
+      - "443"
+      
+    depends_on: 
+        - "mybank.db"
+    networks:
+        - mybanknetwork
+
   mybank.db:
     container_name: mybankdb
-        image: mariadb:latest
-        restart: always
-        environment:
-            MYSQL_USER: mybank
-            MYSQL_ROOT_PASSWORD: mybank
-            MYSQL_DATABASE: mybank
-        expose:
-              - "3306"
-        ports:
-            - "3301:3306"
-        networks:
-            -  minhasnfcnetwork
+    image: mariadb:latest
+    restart: always
+    environment:
+        MYSQL_ROOT_PASSWORD: mybank
+        MYSQL_DATABASE: mybank
+    expose:
+        - "3306"
+    ports:
+        - "3301:3306"
+    networks:
+        - mybanknetwork
 
 networks:
     mybanknetwork:

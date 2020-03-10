@@ -51,7 +51,7 @@ namespace MyBank.Web
                     };
                 });
 #else
-            .AddControllersWithViews(options =>
+            services.AddControllersWithViews(options =>
                         options.Filters.Add(new HttpResponseExceptionFilter()))
                 .AddNewtonsoftJson(options =>
                         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -110,7 +110,7 @@ namespace MyBank.Web
             });
 
             app.UseDefaultFiles();
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -123,6 +123,7 @@ namespace MyBank.Web
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }
