@@ -4,7 +4,7 @@ Projeto desenvolvido como exemplo de estrutura de aplicação.
 
 ## Páginas
 
-* / => UI de Açãoes
+* / => UI de Ações
 
 * /api-docs => Swagger
 
